@@ -114,3 +114,5 @@ def translate_rna_to_protein(rna):
 
 with open('translate_rna_to_protein.txt', 'tw') as out:
     print(translate_rna_to_protein(rnaDict), file = out)
+
+dna.close()

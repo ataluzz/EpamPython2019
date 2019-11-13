@@ -35,32 +35,33 @@ P.S. За незакрытый файловый дескриптор - кара�
 
 # read the file dna.fasta
 dna = open("./files/dna.fasta")
-dnaDict = {}
-rnaDict = {}
+dna_dict = {}
+rna_dict = {}
 lines = dna.read().splitlines()
-dnaName = "1"
-fastaseq = ""
+dna.close()
+dna_name = "1"
+fasta_seq = ""
 for line in lines:
     if line[0] == ">":
-        dnaDict.update({dnaName: fastaseq})
-        dnaName = line[1:]
-        fastaseq = ""
+        dna_dict.update({dna_name: fasta_seq})
+        dna_name = line[1:]
+        fasta_seq = ""
     else:
-        fastaseq += line
-dnaDict.update({dnaName: fastaseq})
-dnaDict.pop("1")
+        fasta_seq += line
+dna_dict.update({dna_name: fasta_seq})
+dna_dict.pop("1")
 
 def translate_from_dna_to_rna(dna):
     for key in dna:
-        rnaSeq = dna[key].replace('T', 'U')
-        rnaDict.update({key: rnaSeq})
+        rna_seq = dna[key].replace('T', 'U')
+        rna_dict.update({key: rna_seq})
     rna = ""
-    for key in rnaDict:
-        rna += str(key) + ":" + str(rnaDict[key]) + "\n"
+    for key in rna_dict:
+        rna += str(key) + ":" + str(rna_dict[key]) + "\n"
     return rna
 
 with open('translate_from_dna_to_rna.txt', 'tw') as out:
-    print(translate_from_dna_to_rna(dnaDict), file = out)   
+    print(translate_from_dna_to_rna(dna_dict), file = out)   
 
 def count_nucleotides(dna):
     a = 0
@@ -76,7 +77,7 @@ def count_nucleotides(dna):
     return num_of_nucleotides
    
 with open('count_nucleotides.txt', 'tw') as out:
-    print(count_nucleotides(dnaDict), file = out)
+    print(count_nucleotides(dna_dict), file = out)
 
 
 def translate_rna_to_protein(rna):
@@ -113,6 +114,4 @@ def translate_rna_to_protein(rna):
     return protein
 
 with open('translate_rna_to_protein.txt', 'tw') as out:
-    print(translate_rna_to_protein(rnaDict), file = out)
-
-dna.close()
+    print(translate_rna_to_protein(rna_dict), file = out)

@@ -15,12 +15,9 @@ def modified_func(func, *fixated_args, **fixated_kwargs):
         new_function.__doc__ = new_function.__doc__.replace('{fixated_kwargs}', str(fixated_kwargs))
         new_function.__doc__ = new_function.__doc__.replace('{source_code}', inspect.getsource(new_function))
 
-        if args or kwargs:
-            all_args = fixated_args + args
-            all_kwargs = {**fixated_kwargs, **kwargs}
-            res = func(all_args, all_kwargs)
-            return res
-        else:
-            res = func(fixated_args, fixated_kwargs)
-            return res
+        all_args = list(fixated_args + args)
+        all_kwargs = {**fixated_kwargs, **kwargs}
+        all_args = all_args + list(all_kwargs[key] for key in all_kwargs)
+        res = func(all_args)
+        return res
     return new_function

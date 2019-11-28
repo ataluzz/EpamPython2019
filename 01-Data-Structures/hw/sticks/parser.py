@@ -257,22 +257,18 @@ def stats_for_all(wine_list):
             + {get_active_comment(wine_list)[1]}
             '''))
         md.writelines(replaced)
-        
-def main():        
-    path_1 = "winedata_1.json"
-    path_2 = "winedata_2.json"
-    sorts = (
-        'Gew\\u00fcrztraminer', 'Riesling', 'Merlot', 
-        'Madera', 'Tempranillo', 'Red Blend'
-        )
+               
+path_1 = "winedata_1.json"
+path_2 = "winedata_2.json"
+sorts = (
+    'Gew\\u00fcrztraminer', 'Riesling', 'Merlot', 
+    'Madera', 'Tempranillo', 'Red Blend'
+    )
 
-    winedata_1 = open_file(path_1)
-    winedata_2 = open_file(path_2)
-    wd = merge_files(winedata_1, winedata_2)
-    wd1 = parse_json(wd)
-    whole_list = wine_list_dump(wd1)
-    stats_for_sorts(wd1, sorts)
-    stats_for_all(wd1)
-
-if __name__ == '__main__':
-    main()
+winedata_1 = open_file(path_1)
+winedata_2 = open_file(path_2)
+wd = merge_files(winedata_1, winedata_2)
+wd1 = parse_json(wd)
+whole_list = wine_list_dump(wd1)
+stats_for_sorts(wd1, sorts)
+stats_for_all(wd1)

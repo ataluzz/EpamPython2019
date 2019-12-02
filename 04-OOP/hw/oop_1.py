@@ -39,12 +39,46 @@ PEP8 соблюдать строго, проверку делаю автотес
 """
 import datetime
 
+class Homework:
+    
+    def __init__(self, text, days):
+        self.text = text
+        self.deadline = datetime.timedelta(days)
+        self.created = datetime.datetime.today()
+    
+    def is_active(self):
+        if datetime.datetime.today() >= self.deadline + self.created:
+            return False
+        else:
+            return True
+            
+class Student:
+    
+    def __init__(self, first_name, last_name):
+        self.last_name = last_name
+        self.first_name = first_name
+    
+    def do_homework(self, homew):
+        if homew.is_active():
+            return homew
+        else:
+            print("You are late")
+            
+class Teacher:
+        
+    def __init__(self, first_name, last_name):
+        self.last_name = last_name
+        self.first_name = first_name
+    
+    def create_homework(self, text, deadline):
+        hw = Homework(text, deadline)
+        return hw
 
 if __name__ == '__main__':
     teacher = Teacher('Daniil', 'Shadrin')
     student = Student('Roman', 'Petrov')
-    teacher.last_name  # Daniil
-    student.first_name  # Petrov
+    teacher.last_name  # Shadrin
+    student.first_name  # Roman
 
     expired_homework = teacher.create_homework('Learn functions', 0)
     expired_homework.created  # Example: 2019-05-26 16:44:30.688762

@@ -52,6 +52,81 @@ PEP8 соблюдать строго, проверку делаю автотес
 import datetime
 from collections import defaultdict
 
+class DeadlineError(Exception):
+    pass
+
+class Name:
+    
+    def __init__(self, first_name, last_name):
+        self.last_name = last_name
+        self.first_name = first_name
+
+        
+class Homework:
+    
+    def __init__(self, text, days):
+        self.text = text
+        self.deadline = datetime.timedelta(days)
+        self.created = datetime.datetime.today()
+    
+    def is_active(self):
+        if datetime.datetime.today() > self.deadline + self.created:
+            return False
+        else:
+            return True
+        
+
+class Student(Name):
+    
+    def __init__(self, first_name, last_name):
+        Name.__init__(self, first_name, last_name)
+    
+    def do_homework(self, homework: Homework, solution: str):
+        if homework.is_active():
+            return HomeworkResult(self, homework, solution)
+        else:
+            raise DeadlineError("You are late")
+        
+
+class HomeworkResult:
+    
+    def __init__(self, author: Student, homework: Homework, solution: str):
+        if isinstance(homework, Homework):
+            self.homework = homework
+        else:
+            raise ValueError("You gave a not Homework object")
+        self.created = datetime.datetime.today()
+        self.author = author
+        self.solution = solution
+        
+        
+class Teacher(Name):
+    
+    homework_done = defaultdict(list)
+    
+    def __init__(self, first_name, last_name):
+        Name.__init__(self, first_name, last_name)    
+    
+    @staticmethod
+    def create_homework(text, deadline):
+        return Homework(text, deadline)
+    
+    @classmethod
+    def check_homework(cls, hwresult: HomeworkResult):
+        if len(hwresult.solution) > 5:
+            if hwresult.homework not in cls.homework_done:
+                cls.homework_done[hwresult.homework].append(hwresult.solution)
+            return True
+        else:
+            return False
+    
+    @classmethod
+    def reset_results(cls, homework: Homework = None):
+        if homework == None:
+            cls.homework_done.clear()
+        else:
+            del homework_done[homework]
+            
 
 if __name__ == '__main__':
     opp_teacher = Teacher('Daniil', 'Shadrin')

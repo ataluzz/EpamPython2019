@@ -1,5 +1,3 @@
-#task1
-
 from queue import Queue
 import collections
 

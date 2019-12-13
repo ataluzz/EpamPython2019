@@ -71,7 +71,7 @@ def stats_for_sorts(wine_list, sorts):
         f.write('''{"statistics": {
                 "wine": {
                      ''')
-        md.write('''##Статистика для вин: \n''')
+        md.write('''## Статистика для вин: \n''')
         for var in sorts:
             for wine in wine_list:
                 if var == wine['variety']:
@@ -103,7 +103,7 @@ def stats_for_sorts(wine_list, sorts):
                                     "average_score": {average_score}
                                     }},
                      ''')
-            md.write(f'''###{var}:
+            md.write(f'''### {var}:
             + average_price: {average_price}, 
             + min_price: {min_price},
             + max_price: {max_price},

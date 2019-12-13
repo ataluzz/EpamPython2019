@@ -1,4 +1,4 @@
-from collections import defaultdict
+﻿from collections import defaultdict
 
 def open_file(path):
     f = open(path, "r")
@@ -76,8 +76,10 @@ def stats_for_sorts(wine_list, sorts):
             for wine in wine_list:
                 if var == wine['variety']:
                     wine_counter += 1
-                    wine_prices.append(wine['price'])
-                    wine_scores.append(wine['points'])
+                    if wine['price'] is not None:
+                        wine_prices.append(wine['price'])
+                    if wine['points'] is not None:
+                        wine_scores.append(wine['points'])
                     if wine['region_1'] is not None:
                         wine_regions.append(wine['region_1'])
                     if wine['region_2'] is not None:
@@ -120,7 +122,10 @@ def get_price_stats(wine_list):
     expensive_wines = []
     cheapest_wines = []
     exp_price = wine_list[0]['price']
-    cheap_price = wine_list[-1]['price']
+    cheap_price = exp_price
+    for wine in wine_list:
+        if wine['price'] != None and int(wine['price']) < int(cheap_price):
+            cheap_price = wine['price']
     for wine in wine_list:
         if wine['price'] == exp_price:
             expensive_wines.append(wine['title'])
@@ -134,9 +139,9 @@ def get_score_stats(wine_list):
     max_score_wine = []
     min_score_wine = []
     for wine in wine_list:
-        if wine['points'] > max_score:
+        if int(wine['points']) > int(max_score):
             max_score = wine['points']
-        if wine['points'] < min_score:
+        if int(wine['points']) < int(min_score):
             min_score = wine['points']
     for wine in wine_list:
         if wine['points'] == max_score:

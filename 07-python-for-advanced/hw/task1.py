@@ -25,12 +25,13 @@ True
 1
 
 """
+import sys
+from weakref import WeakKeyDictionary, WeakValueDictionary
 
 class MetaSingleton(type):
     
-    _list_of_inst = []
-    _instances = {}
-    _attributes = {}
+    _instances = WeakValueDictionary()
+    _attributes = WeakKeyDictionary()
     
     def __call__(cls, *args, **kwargs):
                 
@@ -39,10 +40,7 @@ class MetaSingleton(type):
                 if v == value:
                     return k
                         
-        def new_del(instance): # i need help
-            if instance in cls._list_of_inst:
-                index = cls._list_of_inst.index(instance)
-                del cls._list_of_inst[index]
+        def new_del(instance):
 
             if instance in cls._attributes.keys():
                 del cls._attributes[instance]
@@ -61,8 +59,7 @@ class MetaSingleton(type):
                     cls._instances[cls] = get_key(cls._attributes, (args + tuple(kwargs.values())))
                     return cls._instances[cls]
         instance = super(MetaSingleton, cls).__call__(*args, **kwargs)
-        cls._list_of_inst.append(instance)
-        cls._instances[cls] = cls._list_of_inst
+        cls._instances[cls] = instance
         cls._attributes[instance] = (args + tuple(kwargs.values()))
         cls.__del__ = new_del
         instance.connect = connect
@@ -81,19 +78,15 @@ class SiamObj(metaclass = MetaSingleton):
         
 
 if __name__ == '__main__':
-    unit1 = SiamObj('2', '2', a=1)
-    unit2 = SiamObj('2', '2', a=1)
-    print(unit1)
-    print(unit2)
+    unit1 = SiamObj('1', '2', a=1)
+    unit2 = SiamObj('1', '2', a=1)
     print(unit1 is unit2)
-    unit3 = SiamObj('7', '2', a=1)
-    unit4 = SiamObj('3', '1', a=9)
-    print(unit4)
-    print(unit3)
+    unit3 = SiamObj('2', '2', a=1)
     print(unit2 is unit3)
-    unit3.connect('2', '2', 1).a = 5
-    print(unit2.a == 5)
-    pool = unit4.pool
+    unit3.connect('1', '2', 1).a = 2
+    print(unit2.a == 2)
+    pool = unit3.pool
     print(len(pool))
     del unit3
     print(len(pool))
+

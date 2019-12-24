@@ -49,3 +49,53 @@ Dear John, there is new playlist on 'All about dogs' channel: 'Dogs nutrition'
 Dear Erica, there is new playlist on 'All about dogs' channel: 'Dogs nutrition'
 
 """
+class MyTubeUser:
+    def __init__(self, user_name: str):
+        self._name = user_name
+        
+    def update(self, message: str):
+        print(message)
+
+        
+class MyTubeChannel:
+    playlists = {}
+    
+    def __init__(self, channel_name: str, channel_owner: MyTubeUser):
+        self.name = channel_name
+        self.owner = channel_owner
+        self._subscribers = set()
+
+    def subscribe(self, user: MyTubeUser):
+        self._subscribers.add(user)
+        
+    def publish_video(self, video: str):
+        for subscriber in self._subscribers:
+            subscriber.update(f"Dear {subscriber._name}, there is new video on '{self.name}' channel: '{video}'")
+        
+    def publish_playlist(self, name: str, playlist: list):
+        for subscriber in self._subscribers:
+            subscriber.update(f"Dear {subscriber._name}, there is new playlist on '{self.name}' channel: '{name}'")
+        
+                            
+matt = MyTubeUser('Matt')
+john = MyTubeUser('John')
+erica = MyTubeUser('Erica')
+
+dogs_life = MyTubeChannel('All about dogs', matt)
+dogs_life.subscribe(john)
+dogs_life.subscribe(erica)
+
+dogs_nutrition_videos = ['What do dogs eat?', 'Which Pedigree pack to choose?']
+dogs_nutrition_playlist = {'Dogs nutrition': dogs_nutrition_videos}
+for video in dogs_nutrition_videos:
+    dogs_life.publish_video(video)
+dogs_life.publish_playlist('Dogs nutrition', dogs_nutrition_playlist)
+
+#Output:
+#Dear John, there is new video on 'All about dogs' channel: 'What do dogs eat?'
+#Dear Erica, there is new video on 'All about dogs' channel: 'What do dogs eat?'
+#Dear John, there is new video on 'All about dogs' channel: 'Which Pedigree pack to choose?'
+#Dear Erica, there is new video on 'All about dogs' channel: 'Which Pedigree pack to choose?'
+#Dear John, there is new playlist on 'All about dogs' channel: 'Dogs nutrition'
+#Dear Erica, there is new playlist on 'All about dogs' channel: 'Dogs nutrition'
+

@@ -19,9 +19,9 @@
 Примечание: Действительно конвертировать XML в JSON не нужно. Будет достаточно изменить расширение документа.
 """
 
-import uuid
 import os
-
+import uuid
+import re
 
 class StoreService:
     stored_documents = {}
@@ -99,14 +99,28 @@ class DocumentsHandler:
 
         return loaded_documents
 
-
+    
 def client_code(documents_handler):
     xml_files_to_upload = os.listdir(os.path.dirname(__file__) + '/documents')
-
     document_ids = documents_handler.upload_documents(xml_files_to_upload)
     print(document_ids)
     print(documents_handler.get_documents(document_ids[1]))
 
+    
+class Adapter:
+    def __init__(self, handler):
+        self._handler= handler
+        
+    def upload_documents(self, documents):
+        final_docs = []
+        for document in documents:
+            if document.endswith(".xml"):
+                document = re.sub(r".xml", r".json", document)
+            final_docs.append(document)
+        return self._handler.upload_documents(final_docs)
+        
+    def get_documents(self, document_ids):
+        return self._handler.get_documents(document_ids)
 
 if __name__ == "__main__":
     class App:
@@ -115,5 +129,5 @@ if __name__ == "__main__":
     app = App()
     app.documents_handler = DocumentsHandler(StoreService())
     # Реализуйте класс Adapter и раскомментируйте строку ниже
-    # app.documents_handler = Adapter(app.documents_handler)
+    app.documents_handler = Adapter(app.documents_handler)
     client_code(app.documents_handler)

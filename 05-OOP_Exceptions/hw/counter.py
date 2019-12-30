@@ -8,28 +8,28 @@ reset_instances_counter - сбросить счетчик экземпляров
 
 Ниже пример использования
 """
-
-
 def instances_counter(cls):
-    counter = 0
-    class NewCls(object):
-        def __init__(self, *args, **kwargs):
-            self.instance = cls(*args, **kwargs)
-            nonlocal counter
-            counter += 1
-        
-        @classmethod
-        def get_created_instances(self):
-            nonlocal counter
-            return counter
-        
-        @classmethod
-        def reset_instances_counter(self):
-            nonlocal counter
-            answer = counter
-            counter = 0
-            return answer
-    return NewCls
+    cls.counter = 0
+    
+    def __new__(cls, *args, **kwargs):
+        cls.counter += 1
+        return super(cls, cls).__new__(cls)
+
+    @classmethod
+    def get_created_instances(self):
+        return cls.counter
+
+    @classmethod
+    def reset_instances_counter(self):
+        curr_counter = cls.counter
+        cls.counter = 0
+        return curr_counter
+    
+    cls.__new__ = __new__
+    cls.get_created_instances = get_created_instances
+    cls.reset_instances_counter = reset_instances_counter
+    
+    return cls
 
 
 @instances_counter

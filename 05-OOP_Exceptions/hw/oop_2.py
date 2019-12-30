@@ -55,8 +55,8 @@ from collections import defaultdict
 class DeadlineError(Exception):
     pass
 
-class Name:
-    
+class Person:
+
     def __init__(self, first_name, last_name):
         self.last_name = last_name
         self.first_name = first_name
@@ -70,16 +70,10 @@ class Homework:
         self.created = datetime.datetime.today()
     
     def is_active(self):
-        if datetime.datetime.today() > self.deadline + self.created:
-            return False
-        else:
-            return True
+        return datetime.datetime.today() < self.deadline + self.created
         
 
-class Student(Name):
-    
-    def __init__(self, first_name, last_name):
-        Name.__init__(self, first_name, last_name)
+class Student(Person):
     
     def do_homework(self, homework: Homework, solution: str):
         if homework.is_active():
@@ -91,21 +85,17 @@ class Student(Name):
 class HomeworkResult:
     
     def __init__(self, author: Student, homework: Homework, solution: str):
-        if isinstance(homework, Homework):
-            self.homework = homework
-        else:
-            raise ValueError("You gave a not Homework object")
+        if not isinstance(homework, Homework):
+            raise TypeError("You gave a not Homework object")
+        self.homework = homework
         self.created = datetime.datetime.today()
         self.author = author
         self.solution = solution
         
         
-class Teacher(Name):
+class Teacher(Person):
     
     homework_done = defaultdict(list)
-    
-    def __init__(self, first_name, last_name):
-        Name.__init__(self, first_name, last_name)    
     
     @staticmethod
     def create_homework(text, deadline):
@@ -122,10 +112,10 @@ class Teacher(Name):
     
     @classmethod
     def reset_results(cls, homework: Homework = None):
-        if homework == None:
-            cls.homework_done.clear()
+        if homework:
+            cls.homework_done.pop(homework)
         else:
-            del homework_done[homework]
+            cls.homework_done.clear()
             
 
 if __name__ == '__main__':

@@ -4,19 +4,22 @@ E - dict(<V> : [<V>, <V>, ...])
 значение - список вершин, достижимых из данной
 Сделать так, чтобы по графу можно было итерироваться(обходом в ширину)
 """
+#task1
+
 from queue import Queue
 import collections
 
-class GraphIterator(collections.abc.Iterator):
+class GraphIterator:
+    
     def __init__(self, graph):
         self.E = E
         self.queue = Queue()
         self.keys = list(E.keys())
-        self.visited = [self.keys[0]]
-        self.queue.put(self.keys[0])
+        self.visited = [tuple(self.E.keys())[0]]
+        self.queue.put(tuple(self.E.keys())[0])
         
     def __next__(self):
-        while self.queue:
+        while not self.queue.empty():
             k = self.queue.get()
             values = self.E[k]
             for val in values:
@@ -25,10 +28,13 @@ class GraphIterator(collections.abc.Iterator):
                     self.queue.put(val)
             return k
         raise StopIteration
+        
+    def __iterator__(self):
+        return self
                     
                 
                 
-class Graph(collections.abc.Iterable):
+class Graph:
     def __init__(self, E):
         self.E = E
     

@@ -12,6 +12,8 @@ https://ru.wikipedia.org/wiki/%D0%9A%D0%B2%D0%B0%D1%82%D0%B5%D1%80%D0%BD%D0%B8%D
 - взаимодействие с числами других типов
 """
 
+#task2
+
 class Quaternion:
     
     def __init__(self, a, b, c, d):
@@ -21,7 +23,10 @@ class Quaternion:
         self.d = d
         
     def __eq__(self, other):
-        return self.__abs__ == other.__abs__
+        return self.a == other.a and \
+           self.b == other.b and \
+           self.c == other.c and \
+           self.d == other.d
     
     def __str__(self):
         return f"{self.a} {self.b}i {self.c}j {self.d}k"
@@ -42,11 +47,19 @@ class Quaternion:
     def __abs__(self):
         return (self.a**2 + self.b**2 + self.c**2 + self.d**2)**0.5
     
-    def inversed(self):
+    @classmethod
+    def inversed(cls):
         sq = self.a**2 + self.b**2 + self.c**2 + self.d**2
-        return Quaternion(self.a / sq, self.b / sq, self.c / sq, self.d / sq)
+        return cls(self.a / sq, self.b / sq, self.c / sq, self.d / sq)
     
     def __truediv__(self, other):
-        left_quotient = self * other.inversed()
+        """This method returns left quotient.
+        For getting right quotient use q2.right_quotient(q3)"""
+        left_quotient = self.inversed() * other
+        return left_quotient
+        
+    def right_quotient(self, other):
+        """This method returns right quotient.
+        For getting left quotient use q2 / q3"""
         right_quotient = other * self.inversed()
-        return left_quotient, right_quotient
+        return right_quotient

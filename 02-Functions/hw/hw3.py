@@ -1,7 +1,7 @@
-def make_it_count(func, counter_name: str):
-    def function():
+def make_it_count(func, counter_name):
+    def function(*args, **kwargs):
         globals()[counter_name] += 1
-        func()
+        return func(*args, **kwargs)
     return function
 
 def func1():

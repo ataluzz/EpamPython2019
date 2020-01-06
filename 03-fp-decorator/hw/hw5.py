@@ -50,6 +50,9 @@ fib1(15)
 fib2(15)
 fib3(15)
 fib4(15)
+counters = [fibon1[0], fibon2[0], fibon3[0], fibon4[0]]
 times = [fibon1[1], fibon2[1], fibon3[1], fibon4[1]]
-minind = times.index(min(times)) + 1
-print("optimal fibonacci algorithm is function number " + str(minind))
+minindcounters = counters.index(min(counters)) + 1
+minindtimes = times.index(min(times)) + 1
+print("optimal fibonacci algorithm (count of function calls) is function number " + str(minindcounters))
+print("optimal fibonacci algorithm (time) is function number " + str(minindtimes))

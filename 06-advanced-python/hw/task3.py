@@ -7,16 +7,14 @@ print("It's fine")
 
 class Suppressor:
     
-    def __init__(self, error_name):
-        self.error_name = error_name
+    def __init__(self, *error_names):
+        self.error_names = error_names
         
     def __enter__(self):
-        return self.error_name
+        pass
         
     def __exit__(self, exp_type, exp_value, exp_traceback):
-        if exp_traceback is self.error_name:
-            return True
-        return True
+        return issubclass(exp_type, self.error_names)
         
 with Suppressor(ZeroDivisionError):
     1/0

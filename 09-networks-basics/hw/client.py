@@ -1,6 +1,4 @@
-#client
-
-from socket import AF_INET, socket, SOCK_STREAM
+import socket
 from threading import Thread
 
 def receive():

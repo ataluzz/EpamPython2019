@@ -12,7 +12,7 @@ def receive():
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(("127.0.0.1", 1111))
-thread = threading.Thread(target=receive).start()
+thread = Thread(target=receive).start()
 msg = ''
 
 while msg != '*quit':

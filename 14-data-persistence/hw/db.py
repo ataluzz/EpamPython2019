@@ -39,8 +39,8 @@ class MongoStorage(Storage):
         self.client = MongoClient(host, port)
         self.db = self.client.test_database
         self.collection = self.db.test_collection
-        self.deserial_data = deserialization()
-        self.serial_data = serialization()
+        self.deserial_data = self.deserialization()
+        self.serial_data = self.serialization()
         
     def get_data(self):
         return self.collection.find({})
@@ -53,8 +53,8 @@ class RedisStorage(Storage):
     def __init__(self, data, protocol):
         super().__init__(data, protocol)
         self.r = redis.Redis()
-        self.serial_data = serialization()
-        self.deserial_data = deserialization()
+        self.serial_data = self.serialization()
+        self.deserial_data = self.deserialization()
         
     def get_data(self):
         return self.r.get('protocol'), self.r.get('data')

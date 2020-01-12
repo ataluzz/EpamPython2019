@@ -30,7 +30,7 @@ def handle_client(client):
             del clients[client]
             broadcast(bytes(f'{name} has left the chat', 'utf8'))
             break
-        elif msg == bytes('*list', 'utf8'):
+        elif msg == bytes('*members', 'utf8'):
             members_list = '\n'.join(list(clients.values()))
             client.send(bytes(members_list, 'utf-8'))
         elif msg.startswith(bytes('@', 'utf8')):

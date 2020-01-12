@@ -18,7 +18,7 @@ def handle_client(client):
     welcome_msg = f"Welcome {name}! For quitting from chat, type *quit.\n" \
               f"To get list of chat members, type *members.\n" \
               f"To send private message, type @name of chat member and your message."
-    client.send(bytes(welcome, "utf8"))
+    client.send(bytes(welcome_msg, "utf8"))
     msg = f'{name} has joined the chat'
     broadcast(bytes(msg, 'utf8'))
     clients[client] = name

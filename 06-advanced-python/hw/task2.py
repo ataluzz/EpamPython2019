@@ -48,9 +48,9 @@ class Quaternion:
         return (self.a**2 + self.b**2 + self.c**2 + self.d**2)**0.5
     
     @classmethod
-    def inversed(cls):
-        sq = self.a**2 + self.b**2 + self.c**2 + self.d**2
-        return cls(self.a / sq, self.b / sq, self.c / sq, self.d / sq)
+    def inversed(cls, a, b, c, d):
+        sq = a**2 + b**2 + c**2 + d**2
+        return a / sq, b / sq, c / sq, d / sq
     
     def __truediv__(self, other):
         """This method returns left quotient.
